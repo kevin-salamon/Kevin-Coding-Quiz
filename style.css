@@ -1,0 +1,30 @@
+#quiz {
+    color: white;
+    font-family: 'Bebas Neue', cursive;
+}
+
+#start-button {
+    border: 1px solid black;
+}
+
+h1,h4,h5 {
+    text-align: center;
+}
+
+button {
+    width: 100px;
+    height: 30px;
+}
+
+.quiz-spacing {
+    border: 2px solid black;
+    margin: 1px;
+    padding: 5px;
+    background-color: purple;
+}
+
+.button-holder {
+    display: block;
+    text-align: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
