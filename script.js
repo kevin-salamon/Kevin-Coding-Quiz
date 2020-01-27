@@ -221,6 +221,7 @@ function continueQuiz() {
 
 function completeQuiz() {
     if (timer <= 0) {
+        timer = 0;
         intro.textContent = "Time's up!";
         expo.textContent = `You ran out of time. You got ${score}/10 questions correct.`;
     } else {
@@ -240,7 +241,7 @@ function startTimer() {
     let timerInterval = setInterval(function() {
         timer--;
         timeKeep.textContent = `There are ${timer} seconds remaining.`;
-        if (timer == 0 || questionCount > 9) {
+        if (timer <= 0 || questionCount > 9) {
             clearInterval(timerInterval);
             completeQuiz();
         }
