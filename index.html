@@ -8,7 +8,9 @@
     <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
-
+    <nav class="nav nav-tabs nav-fill" id="timer-bar">
+        <a class="navbar-brand"></a>
+    </nav>
     <br><br><br>
     <h1 id="intro"></h1>
     <h4 id="explanation"></h4>
@@ -46,6 +48,34 @@
     </div>
     <br><br>
     <h5 id="result"></h5>
+    <br>
+        <form id="form">
+            <input placeholder="Your name here." id="name">
+            <button id="submit-score">Submit</button>
+        </form>
+        <br><br>
+    <div id = finalscore-container>
+        <h4>High Scores</h4>
+        <table>
+            <tr>
+                <th>Player</th>
+                <th>Score</th>
+            </tr>
+            <tr>
+                <td id="1st-player"></td>
+                <td id="1st-score"></td>
+            </tr>
+            <tr>
+                <td id="2nd-player"></td>
+                <td id="2nd-score"></td>
+            </tr>
+            <tr>
+                <td id="3rd-player"></td>
+                <td id="3rd-score"></td>
+            </tr>
+        </table>
+    </div>
+
     <script src="script.js"></script>
     
 </body>

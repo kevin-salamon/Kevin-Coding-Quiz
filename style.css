@@ -17,7 +17,15 @@
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
-h1,h4,h5 {
+#timer-bar {
+    background-color: purple;
+    font-family: serif;
+    font-size: 24px;
+    color: white;
+    border-bottom: 2px solid black;
+}
+
+h1,h4,h5,form, #finalscore-container {
     text-align: center;
 }
 
@@ -26,10 +34,27 @@ button {
     height: 30px;
 }
 
+table,tr,th,td {
+    border: 3px solid black;
+    text-align: center;
+}
+
+table {
+    width: 50%;
+    margin: 0 auto;
+}
+
+th {
+    color: white;
+    background-color: purple;
+    font-weight: bolder;
+}
+
 .quiz-spacing {
     border: 2px solid black;
     margin: 1px;
     padding: 5px;
     background-color: purple;
+    font-size: 20px;
 }
 

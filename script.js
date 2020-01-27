@@ -1,38 +1,62 @@
+
+/* to-do list:
+-We will need a high scores, and a way to store it as related to the high score owner (within an object)? We may then be able to always sort using object.toArray and the sort function.
+            <!-- {name: var name, score: var score} if we want to set values of object properties, do myObject[myProperty] = x;--> -- this is also used as an example in activity 19
+-we need to draft the readMe
+*/
+
 let intro = document.getElementById("intro");
 let expo = document.getElementById("explanation");
 let begin = document.getElementById("begin");
+let timeKeep = document.getElementById("timer-bar");
 let startButton = document.getElementById("start-button");
 let buttonContainer = document.getElementById("button-holder");
 let quizContainer = document.getElementById("quiz");
 let results = document.getElementById("result");
+let formContainer = document.getElementById("form");
+let pName = document.getElementById("name");
+let submitScore = document.getElementById("submit-score");
 let buttonA = document.getElementById("buttonA");
 let buttonB = document.getElementById("buttonB");
 let buttonC = document.getElementById("buttonC");
 let slotOne = document.getElementById("slot1");
 let slotTwo = document.getElementById("slot2");
 let slotThree = document.getElementById("slot3");
-let timer = 300; // This is also score
-let questionCount = 0;
+let scoreSection = document.getElementById("finalscore-container");
+let firstName = document.getElementById("1st-player");
+let firstScore = document.getElementById("1st-score");
+let secondName = document.getElementById("2nd-player");
+let secondScore = document.getElementById("2nd-score");
+let thirdName = document.getElementById("3rd-player");
+let thirdScore = document.getElementById("3rd-score");
+
+let timer = 180; // total time to play
+let questionCount = 0; // used as an index for the current question - increases when a question is answered
+let score = 0 // total number of questions answered correctly
 let currentQuestion; //used in functions to access question + answer objects within the specific question count (questionCount)
 let output; // used in buttons to contain the button answer
+let scoreArray = []; // used for tracking final scores
 
 intro.textContent = "Welcome to the Coding Quiz!";
-expo.textContent = "This quiz will test your knowledge of Javascript with a battery of multiple-choice questions. Do your best - you have 5 minutes! You will be scored at the end.";
+expo.textContent = "This quiz will test your knowledge of Javascript with a battery of multiple-choice questions. Do your best - you have 3 minutes! You will be scored at the end.";
 begin.textContent = "Click the button below to begin the quiz!"
 quizContainer.style.display = "none";
-
-/* some things to build:
--Points will equal seconds. We need to create a timer that will tick down from (probably) 300 seconds to equal the score, after the quiz has begun.
--We will need a high scores, and a way to store it as related to the high score owner (within an object)? We may then be able to always sort using object.toArray and the sort function.
-*/
+formContainer.style.display = "none";
+timeKeep.style.display = "none";
+scoreSection.style.display = "none";
 
 startButton.addEventListener("click", function() {
-    begin.textContent = " ";
-    timer = 300;
+    timer = 180;
     questionCount = 0;
+    score = 0;
+    begin.textContent = " ";
     results.textContent = " ";
     buttonContainer.style.display = "none";
+    formContainer.style.display = "none";
+    scoreSection.style.display = "none";
     quizContainer.style.display = "block";
+    timeKeep.style.display = "block";
+    startTimer();
     setText();
 });
 
@@ -42,7 +66,7 @@ buttonA.addEventListener("click", function() {
     setText();
 });
 
-buttonB.addEventListener("click", function() {
+buttonB.addEventListener("click", function() { 
     output = "b";
     decideCorrect();
     setText();
@@ -52,6 +76,22 @@ buttonC.addEventListener("click", function() {
     output = "c";
     decideCorrect();
     setText();
+});
+
+submitScore.addEventListener("click", function(event) {
+    event.preventDefault();
+    if (pName.value == "") {
+        return;
+    }
+    scoreSection.style.display = "block";
+    formContainer.style.display = "none";
+    playerName = pName.value;
+    let object = {
+        name: playerName,
+        score: timer,
+    }
+    scoreArray.push(object);
+    saveScore();
 });
 
 
@@ -138,7 +178,7 @@ let questions = [
         rightAnswer: "a",
     },
     {
-        question: "You require your code to iterate through a large amount of data, for a currently unknown amount of time. What structure would you use to achieve this end?",
+        question: "You require your code to iterate through a large amount of data, for a currently unknown amount of iterations. What structure would you use to achieve this end?",
         answer: {
             a: "An array",
             b: "A while-loop",
@@ -154,9 +194,10 @@ function decideCorrect() { // will decide if the answer is correct and change sc
 
     if (output != currentQuestion.rightAnswer) {
         timer = timer - 10;
-        results.textContent = "Incorrect.";
+        results.textContent = "Incorrect. -10 seconds!";
     } else {
         results.textContent = "Correct!";
+        score++;
     }
     questionCount++;
 }
@@ -181,15 +222,37 @@ function continueQuiz() {
 function completeQuiz() {
     if (timer <= 0) {
         intro.textContent = "Time's up!";
-        expo.textContent = `You ran out of time and/or pushed your points down to zero. Sorry!`;
+        expo.textContent = `You ran out of time. You got ${score}/10 questions correct.`;
     } else {
         intro.textContent = "Quiz Complete!";
-        expo.textContent = `Your final score is ${timer}.`; 
+        expo.textContent = `You got ${score}/10 questions correct. Your final score (and seconds remaining) is ${timer}.`; 
     }
-    slotOne.textContent = " ";
-    slotTwo.textContent = " ";
-    slotThree.textContent = " ";
+
     quizContainer.style.display = "none";
-    results.textContent = "The quiz has ended - please click the 'BEGIN' button to start over, or submit your high scores.";
+    results.textContent = "The quiz has ended - please click the 'BEGIN' button to start over, or submit your high scores below.";
     buttonContainer.style.display = "block";
+    formContainer.style.display = "block";
+    timeKeep.style.display = "none";
+    pName.value = " ";
+}
+
+function startTimer() {
+    let timerInterval = setInterval(function() {
+        timer--;
+        timeKeep.textContent = `There are ${timer} seconds remaining.`;
+        if (timer == 0 || questionCount > 9) {
+            clearInterval(timerInterval);
+            completeQuiz();
+        }
+    }, 1000);
+}
+
+function saveScore() { // sorts the final scores and then writes them to score table
+    scoreArray.sort((a, b) => b.score - a.score);
+    firstName.textContent = scoreArray[0].name;
+    firstScore.textContent = scoreArray[0].score;
+    secondName.textContent = scoreArray[1].name;
+    secondScore.textContent = scoreArray[1].score;
+    thirdName.textContent = scoreArray[2].name;
+    thirdScore.textContent = scoreArray[2].score;
 }
